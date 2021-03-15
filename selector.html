@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="site.webmanifest">
+
+  <style type="text/css">
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+.walletItem {
+  background: #FFFFFF;
+  border-bottom: solid 1px #DDDDDD;
+  padding: 4px 0;
+  list-style: none;
+}
+.walletItem:hover {
+  background: #EEEEEE;
+  border-bottom: solid 1px #DDDDDD;
+  cursor: pointer;
+  padding: 4px 0;
+  list-style: none;
+}
+.walletUrl {
+  color: #555555;
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+
+  <template id="permission">
+    <div>
+      <div>BackboneCabal.xyz</div>
+      <button>Connect</button>
+    </div>
+  </template>
+
+  <template id="list">
+    <ul>
+    </ul>
+  </template>
+
+  <template id="listItem">
+    <li class="walletItem">
+      <div></div>
+      <div class="walletUrl"></div>
+    </li>
+  </template>
+
+  <script>
+var STORAGE_KEY = 'backbonecabal-demo';
+
+var content = document.querySelector('#content');
+
+var defaultWallets = [];
+var defaultRegex = /^#wallets=([\w\d%./\-]+)$/;
+if (defaultRegex.test(location.hash)) {
+  defaultWallets = JSON.parse(decodeURIComponent(defaultRegex.exec(location.hash)[1]))
+}
+
+function testPermissions() {
+  try {
+    localStorage.setItem('test', 'test');
+    return Promise.resolve(true);
+  } catch (e) {
+    return Promise.resolve(false);
+  }
+}
+
+function showList() {
+  var listClone = document.querySelector('#list').content.cloneNode(true);
+  var ul = listClone.querySelector('ul');
+
+  wallets = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+  var addedOrigins = {};
+  var allWallets = wallets.concat(defaultWallets);
+  allWallets.forEach(function(wallet) {
+    if (addedOrigins[wallet.origin]) {
+      return;
+    }
+    addedOrigins[wallet.origin] = true;
+
+    var item = document.querySelector('#listItem').content.cloneNode(true);
+    item.querySelector('li').addEventListener('click', function() {
+      window.parent.postMessage({ message: 'walletSelected', wallet: wallet }, '*');
+    });
+    var rows = item.querySelectorAll('div');
+    rows[0].textContent = wallet.name;
+    rows[1].textContent = wallet.origin;
+
+    ul.appendChild(item);
+  });
+
+  if (allWallets.length === 0) {
+    var empty = document.createElement('li');
+    empty.innerText = 'No wallets found';
+    ul.appendChild(empty);
+  }
+
+  content.appendChild(listClone);
+  window.parent.postMessage({ message: 'setHeight', height: document.body.clientHeight }, '*');
+}
+
+testPermissions().then(function(hasPermission) {
+  if (hasPermission || defaultWallets.length > 0) {
+    showList();
+  } else {
+    content.innerHTML = 'Unfortionately, your browser does not support Web3';
+  }
+});
+  </script>
+</body>
+</html>
