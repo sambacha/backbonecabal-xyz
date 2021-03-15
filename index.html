@@ -1,25 +1,39 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="./hub.js"></script>
-
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-
-  <link rel="manifest" href="site.webmanifest">
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://unpkg.com/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <script>
-    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
-    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
-  </script>
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
+<body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
+    <div class="h-screen bg-white flex flex-col space-y-10 justify-center items-center">
+ 
+  <!-- logo -->
+
+  <!-- Layout  -->
+  <div class="bg-white w-96 shadow-xl rounded p-5">
+    <h1 class="text-3xl font-medium">Manifold Authorization</h1>
+    <p class="text-sm">BackboneCabal Gateway</p>
+    <form class="space-y-5 mt-5">
+      <input type="text" class="w-full h-12 border border-gray-800 rounded px-3" placeholder="username" />
+     <div class="w-full flex items-center  border border-gray-800 rounded px-3">
+        <input type="password" class="w-4/5 h-12"  placeholder="OTP/2FA" />
+        <span class="text-blue-700 hover:bg-blue-400 rounded-full px-3 ">check</span>
+      </div>
+
+      <div class="">
+                  <a href="#!" class="font-medium text-blue-700 hover:bg-blue-300 rounded-full p-2">Recover Password</a>
+      </div>
+
+      <button class="text-center w-full bg-blue-700 rounded-full text-white py-3 font-medium">Authenticate</button>
+
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <p>Status Page <a href="#!" class="text-blue-700 font-medium">Check</a>  </p>
+</div>
+
 </body>
 </html>
